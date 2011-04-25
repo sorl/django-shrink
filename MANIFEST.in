@@ -1,0 +1,3 @@
+include LICENSE README.rst
+recursive-include shrink/shrinks/cc *
+recursive-include shrink/shrinks/yui *
