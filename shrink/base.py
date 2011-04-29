@@ -29,6 +29,8 @@ class Shrink(object):
             storage.modified_time(self.node.destination) <
             datetime.datetime.fromtimestamp(getmtime(latest))
             ):
+            if storage.exists(self.node.destination):
+                storage.delete(self.node.destination) # or else we get next available name
             self.therapy()
         else:
             print self.already_treated
