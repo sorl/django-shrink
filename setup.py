@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-shrink',
-    version='0.0.2',
+    version='0.0.3',
     description='js compiler & css minifier with sass compatibility',
     long_description=open('README.rst').read(),
     author='Mikko Hellsing',

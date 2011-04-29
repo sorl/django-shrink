@@ -69,5 +69,5 @@ def import_string(dot_name):
             __import__(mod_name)
         except ImportError, e:
             raise ImportError('Failed to import %s: %s' % (mod_name, e))
-        return sys.mod_names[mod_name]
+        return sys.modules[mod_name]
 
