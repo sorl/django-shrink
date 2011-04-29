@@ -19,7 +19,7 @@ class ShrinkNode(Node):
         bits = token.split_contents()
         if len(bits) < 2:
             raise TemplateSyntaxError(self.error_message)
-        self.destination = bits[1]
+        self.destination = bits[1].strip('\'"')
         attrs = SortedDict()
         for bit in bits[2:]:
             m = kw_pat.match(bit)
@@ -44,10 +44,6 @@ class ShrinkNode(Node):
                 paths.append(path)
         return paths
 
-    @property
-    def destination_name(self):
-        return '%s%s' % (settings.SHRINK_CACHE_PREFIX, self.destination)
-
     def render(self, context):
         if settings.DEBUG:
             tags = []
@@ -57,11 +53,11 @@ class ShrinkNode(Node):
                 tags.append(tag)
             return '\n'.join(tags)
         else:
-            path = storage.url(self.destination_name)
+            path = storage.url(self.destination)
             if settings.SHRINK_TIMESTAMP:
                 try:
                     timetamp = storage.modified_time(
-                        self.destination_name).isoformat()
+                        self.destination).isoformat()
                     path = '%s?%s' % (path, timetamp)
                 except Exception:
                     pass

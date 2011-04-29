@@ -2,20 +2,22 @@ import datetime
 import os
 import tempfile
 from django.conf import settings
-from shrink.helpers import storage
+from django.core.files.base import ContentFile
+from django.utils.encoding import smart_str
 from os.path import isdir, getmtime, dirname
 from scss import Scss
-from subprocess import Popen
+from shrink.helpers import storage
+from subprocess import Popen, PIPE
+from tempfile import mkstemp
 
 
 class Shrink(object):
     already_treated = ''
 
-    def __init__(self, node):
+    def __init__(self, node, template):
         self.node = node
-        self.template = node.source[0].name
+        self.template = template
         self.absolute_paths = self.node.get_paths(absolute=True)
-        self.destination_path = storage.path(self.node.destination_name)
 
     def therapy(self):
         raise NotImplemented
@@ -23,13 +25,10 @@ class Shrink(object):
     def update(self):
         latest = sorted(self.absolute_paths, key=getmtime, reverse=True)[0]
         if (
-            not storage.exists(self.node.destination_name) or
-            storage.modified_time(self.node.destination_name) <
+            not storage.exists(self.node.destination) or
+            storage.modified_time(self.node.destination) <
             datetime.datetime.fromtimestamp(getmtime(latest))
             ):
-            dest_dir = dirname(self.destination_path)
-            if not isdir(dest_dir):
-                os.makedirs(dest_dir)
             self.therapy()
         else:
             print self.already_treated
@@ -44,11 +43,17 @@ class ScriptCompiler(Shrink):
                 settings.SHRINK_CLOSURE_COMPILER_COMPILATION_LEVEL]
         for absolute_path in self.absolute_paths:
             args.append('--js=%s' % absolute_path)
-        args.append('--js_output_file=%s' % self.destination_path)
+        handle, out = mkstemp()
+        args.append('--js_output_file=%s' % out) # for some reason stdout stalls
+        args = map(smart_str, args)
         print ('Compiling scripts in `%s` to `%s`' %
-            (self.template, self.destination_path))
-        p = Popen(args)
+            (self.template, self.node.destination))
+        p = Popen(args, stdout=PIPE)
         p.wait()
+        with open(out, 'r') as fp:
+            storage.save(self.node.destination, ContentFile(fp.read()))
+        os.close(handle)
+        os.remove(out)
 
 
 class StyleCompressor(Shrink):
@@ -63,14 +68,17 @@ class StyleCompressor(Shrink):
                     css.append(parser.compile(fp.read()))
                 else:
                     css.append(fp.read())
-        tmp = tempfile.mkstemp()[1]
+        handle, tmp = tempfile.mkstemp()
         with open(tmp, 'w') as fp:
             fp.write('\n'.join(css))
         args = ['java', '-jar', settings.SHRINK_YUI_COMPRESSOR,
-                '--type', 'css', '-o', self.destination_path, tmp]
+                '--type', 'css', tmp]
+        args = map(smart_str, args)
         print ('Compressing (s)css in `%s` to `%s`' %
-            (self.template, self.destination_path))
-        p = Popen(args)
+            (self.template, self.node.destination))
+        p = Popen(args, stdout=PIPE)
         p.wait()
+        storage.save(self.node.destination, ContentFile(p.stdout.read()))
+        os.close(handle)
         os.remove(tmp)
 

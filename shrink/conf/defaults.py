@@ -9,11 +9,9 @@ shrinks = pjoin(here, os.pardir, 'shrinks')
 
 SHRINK_SCSS_URL = '/scss/'
 
-SHRINK_CACHE_PREFIX = 'cache/'
-
 SHRINK_TIMESTAMP = True
 
-SHRINK_STORAGE = settings.DEFAULT_FILE_STORAGE
+SHRINK_STORAGE = settings.STATICFILES_STORAGE
 
 SHRINK_CLOSURE_COMPILER = pjoin(shrinks, 'cc', 'compiler.jar')
 

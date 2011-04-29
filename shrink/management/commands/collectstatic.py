@@ -9,6 +9,20 @@ from optparse import make_option
 from os.path import isdir, splitext, join as pjoin
 
 
+def rshrink(node, t):
+    """
+    Recursive fun
+    """
+    if isinstance(node, ScriptNode):
+        shrink = ScriptCompiler(node, t.name)
+        shrink.update()
+    elif isinstance(node, StyleNode):
+        shrink = StyleCompressor(node, t.name)
+        shrink.update()
+    if hasattr(node, 'nodelist'):
+        for n in node.nodelist:
+            rshrink(n, t)
+
 
 class Command(CollectStaticCommand):
     option_list = CollectStaticCommand.option_list + (
@@ -43,11 +57,5 @@ class Command(CollectStaticCommand):
                                 if splitext(f)[1] in extensions:
                                     templates.add(get_template(pjoin(dirpath, f)))
         for t in templates:
-            for node in t.nodelist:
-                if isinstance(node, ScriptNode):
-                    shrink = ScriptCompiler(node)
-                    shrink.update()
-                elif isinstance(node, StyleNode):
-                    shrink = StyleCompressor(node)
-                    shrink.update()
+            rshrink(t, t)
 
