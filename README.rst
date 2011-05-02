@@ -81,32 +81,27 @@ Settings
 --------
 ``SHRINK_SCSS_URL``
     What url path to be used as prefix for the scss compiler view.
-
-    * Default: ``'/scss/'``
+    | Default: ``'/scss/'``
 
 ``SHRINK_TIMESTAMP``
     Controls if you want to timestamp the compressed/compiled assets.
-    * Default: ``True``
+    | Default: ``True``
 
 ``SHRINK_STORAGE``
     Storage for the compressed/compiled assets.
-
-    * Default: ``settings.STATICFILES_STORAGE``
+    | Default: ``settings.STATICFILES_STORAGE``
 
 ``SHRINK_CLOSURE_COMPILER``
     Path to Google Closure Compiler jar.
-
-    * Default: Google Closure Compiler jar provided.
+    | Default: Google Closure Compiler jar provided.
 
 ``SHRINK_CLOSURE_COMPILER_COMPILATION_LEVEL``
     Google Closure Compiler optimization level.
-
-    * Default: ``'SIMPLE_OPTIMIZATIONS'``
+    | Default: ``'SIMPLE_OPTIMIZATIONS'``
 
 ``SHRINK_YUI_COMPRESSOR``
     Path to YUI Compressor
-
-    * Default: YUI compressor jar provided.
+    | Default: YUI compressor jar provided.
 
 
 .. _Sass: http://sass-lang.com/
