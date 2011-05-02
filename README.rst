@@ -8,6 +8,7 @@ Requirements
 ------------
 * Django 1.3+
 * 2.6 <= Python < 3
+* Java for compiling and compressing
 * ``django.contrib.staticfiles`` in ``INSTALLED_APPS``
 
 
