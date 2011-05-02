@@ -79,29 +79,42 @@ and compressing. Thus you need to execute the management command
 
 Settings
 --------
-``SHRINK_SCSS_URL``
-    What url path to be used as prefix for the scss compiler view.
-    | Default: ``'/scss/'``
 
-``SHRINK_TIMESTAMP``
-    Controls if you want to timestamp the compressed/compiled assets.
-    | Default: ``True``
+SHRINK_SCSS_URL
+^^^^^^^^^^^^^^^
+What url path to be used as prefix for the scss compiler view.
 
-``SHRINK_STORAGE``
-    Storage for the compressed/compiled assets.
-    | Default: ``settings.STATICFILES_STORAGE``
+* Default: ``'/scss/'``
 
-``SHRINK_CLOSURE_COMPILER``
-    Path to Google Closure Compiler jar.
-    | Default: Google Closure Compiler jar provided.
+SHRINK_TIMESTAMP
+^^^^^^^^^^^^^^^^
+Controls if you want to timestamp the compressed/compiled assets.
 
-``SHRINK_CLOSURE_COMPILER_COMPILATION_LEVEL``
-    Google Closure Compiler optimization level.
-    | Default: ``'SIMPLE_OPTIMIZATIONS'``
+* Default: ``True``
 
-``SHRINK_YUI_COMPRESSOR``
-    Path to YUI Compressor
-    | Default: YUI compressor jar provided.
+SHRINK_STORAGE
+^^^^^^^^^^^^^^
+Storage for the compressed/compiled assets.
+
+* Default: ``settings.STATICFILES_STORAGE``
+
+SHRINK_CLOSURE_COMPILER
+^^^^^^^^^^^^^^^^^^^^^^^
+Path to Google Closure Compiler jar.
+
+* Default: Google Closure Compiler jar provided.
+
+SHRINK_CLOSURE_COMPILER_COMPILATION_LEVEL
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Google Closure Compiler optimization level.
+
+* Default: ``'SIMPLE_OPTIMIZATIONS'``
+
+SHRINK_YUI_COMPRESSOR
+^^^^^^^^^^^^^^^^^^^^^
+Path to YUI Compressor
+
+* Default: YUI compressor jar provided.
 
 
 .. _Sass: http://sass-lang.com/
