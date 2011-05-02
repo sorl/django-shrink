@@ -64,7 +64,7 @@ When ``DEBUG = True`` this will end up as::
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/reset.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/forms.css">
-    <link rel="stylesheet" href="{{ SHRINK_SCSS_URL }}css/myproject.css">
+    <link rel="stylesheet" href="{{ SHRINK_SCSS_URL }}css/myproject.scss">
     <script src="{{ STATIC_URL }}js/jquery.js"></script>
     <script src="{{ STATIC_URL }}js/plugin.js"></script>
     <script src="{{ STATIC_URL }}js/myproject.js"></script>
