@@ -36,7 +36,7 @@ your urls::
     # urls.py
     urlpatterns = patterns('',
         ...
-        (r'^', include('shrink.urls')),
+        (r'', include('shrink.urls')),
         ...
     )
 
