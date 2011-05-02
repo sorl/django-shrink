@@ -30,7 +30,7 @@ Configuration
         ...
     )
 
-Optionally if you want to use `Sass`_ you need to add the comilation view to
+Optionally if you want to use `Sass`_ you need to add the compilation view to
 your urls::
 
     # urls.py
@@ -41,7 +41,7 @@ your urls::
     )
 
 .. note::
-    The compilation view is only avalailable when ``DEBUG = True``
+    The compilation view is only available when ``DEBUG = True``
 
 
 Usage
