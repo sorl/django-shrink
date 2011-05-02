@@ -7,7 +7,7 @@ A js compiler & css minifier with sass compatibility
 Requirements
 ------------
 * Django 1.3+
-* 2.6 <= Python <= 3
+* 2.6 <= Python < 3
 * ``django.contrib.staticfiles`` in ``INSTALLED_APPS``
 
 
@@ -34,7 +34,11 @@ Optionally if you want to use `Sass`_ you need to add the comilation view to
 your urls::
 
     # urls.py
-    (r'^', include('shrink.urls')),
+    urlpatterns = patterns('',
+        ...
+        (r'^', include('shrink.urls')),
+        ...
+    )
 
 .. note::
     The compilation view is only avalailable when ``DEBUG = True``
