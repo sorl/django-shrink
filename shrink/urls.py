@@ -7,7 +7,7 @@ urlpatterns = []
 
 if settings.DEBUG:
     urlpatterns += patterns('', (
-        r'^%s/(?P<path>.*\.scss)$' % settings.SHRINK_SCSS_URL.strip('/'),
+        r'^%s/(?P<path>.*\.scss)$' % settings.STATIC_URL.strip('/'),
         'shrink.views.scss'
         ))
 
