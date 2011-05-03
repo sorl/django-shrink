@@ -76,7 +76,7 @@ class ScriptNode(ShrinkNode):
 
 @register.tag('styles')
 class StyleNode(ShrinkNode):
-    error_message = 'Usage: css destination [keyword arguments]'
+    error_message = 'Usage: styles destination [keyword arguments]'
     endtag = 'endstyles'
     template = '<link rel="stylesheet" href="{prefix}{path}"{attrs}>'
 
