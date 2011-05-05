@@ -65,7 +65,7 @@ When ``DEBUG = True`` this will end up as::
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/reset.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}css/forms.css">
-    <link rel="stylesheet" href="{{ SHRINK_SCSS_URL }}css/myproject.scss">
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/myproject.scss">
     <script src="{{ STATIC_URL }}js/jquery.js"></script>
     <script src="{{ STATIC_URL }}js/plugin.js"></script>
     <script src="{{ STATIC_URL }}js/myproject.js"></script>
@@ -81,15 +81,12 @@ management command and after collecting the static files it does the compiling
 and compressing. Thus you need to execute the management command
 ``collectstatic`` in your deployment environment.
 
+.. note:: As of yet you need all the source css files and the destination
+   minified css file to be in the same path if they ahev relative references to
+   media.
 
 Settings
 --------
-
-SHRINK_SCSS_URL
-^^^^^^^^^^^^^^^
-What url path to be used as prefix for the scss compiler view.
-
-* Default: ``'/scss/'``
 
 SHRINK_TIMESTAMP
 ^^^^^^^^^^^^^^^^

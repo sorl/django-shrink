@@ -7,8 +7,6 @@ here = abspath(dirname(__file__))
 shrinks = pjoin(here, os.pardir, 'shrinks')
 
 
-SHRINK_SCSS_URL = '/scss/'
-
 SHRINK_TIMESTAMP = True
 
 SHRINK_STORAGE = settings.STATICFILES_STORAGE

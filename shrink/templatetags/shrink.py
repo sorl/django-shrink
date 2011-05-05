@@ -83,9 +83,3 @@ class StyleNode(ShrinkNode):
     def __repr__(self):
         return '<StyleNode>'
 
-    def get_prefix(self, path):
-        if path.endswith('.scss'):
-            return settings.SHRINK_SCSS_URL
-        return settings.STATIC_URL
-
-
