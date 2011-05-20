@@ -49,7 +49,7 @@ Usage
 -----
 Define your javascripts and css files in your template as in this example::
 
-    {% import shrink %}
+    {% load shrink %}
     {% styles css/myproject-min.css %}
         css/reset.css
         css/forms.css

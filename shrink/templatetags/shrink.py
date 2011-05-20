@@ -80,6 +80,11 @@ class StyleNode(ShrinkNode):
     endtag = 'endstyles'
     template = '<link rel="stylesheet" href="{prefix}{path}"{attrs}>'
 
+    def get_prefix(self, path):
+        if path.endswith('.scss'):
+            return settings.SHRINK_SCSS_URL
+        return settings.STATIC_URL
+
     def __repr__(self):
         return '<StyleNode>'
 
