@@ -40,7 +40,7 @@ class ShrinkNode(Node):
             path = path.strip()
             if path and absolute:
                 path = find_static(path)
-            if path:
+            if path and path not in paths:
                 paths.append(path)
         return paths
 

@@ -23,11 +23,13 @@ class Shrink(object):
         raise NotImplemented
 
     def update(self):
-        latest = sorted(self.absolute_paths, key=getmtime, reverse=True)[0]
+        paths = sorted(self.absolute_paths, key=getmtime, reverse=True)
+        if not paths:
+            return
         if (
             not storage.exists(self.node.destination) or
             storage.modified_time(self.node.destination) <
-            datetime.datetime.fromtimestamp(getmtime(latest))
+            datetime.datetime.fromtimestamp(getmtime(paths[0]))
             ):
             if storage.exists(self.node.destination):
                 storage.delete(self.node.destination) # or else we get next available name
