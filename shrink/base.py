@@ -1,14 +1,12 @@
 import datetime
 import os
-import tempfile
-from django.conf import settings
 from django.core.files.base import ContentFile
-from django.utils.encoding import smart_str
-from os.path import isdir, getmtime, dirname
-from scss import Scss
+from os.path import getmtime
 from shrink.helpers import storage
+from slimmer import css_slimmer
 from subprocess import Popen, PIPE
 from tempfile import mkstemp
+
 
 
 class Shrink(object):
@@ -38,51 +36,35 @@ class Shrink(object):
             print self.already_treated
 
 
-class ScriptCompiler(Shrink):
+class ScriptShrink(Shrink):
     already_treated = 'Scripts:\tup-to-date.'
 
     def therapy(self):
-        args = ['java', '-jar', settings.SHRINK_CLOSURE_COMPILER,
-                '--compilation_level',
-                settings.SHRINK_CLOSURE_COMPILER_COMPILATION_LEVEL]
-        for absolute_path in self.absolute_paths:
-            args.append('--js=%s' % absolute_path)
-        handle, out = mkstemp()
-        args.append('--js_output_file=%s' % out) # for some reason stdout stalls
-        args = map(smart_str, args)
-        print ('Compiling scripts in `%s` to `%s`' %
-            (self.template, self.node.destination))
-        p = Popen(args, stdout=PIPE)
+        a_handle, a = mkstemp()
+        b_handle, b = mkstemp()
+        with open(a, 'wb') as a_fp:
+            for fn in self.absolute_paths:
+                with open(fn, 'r') as fp:
+                    a_fp.write(fp.read())
+                    a_fp.write(';')
+        p = Popen(['uglifyjs', '-o', b, a], stdout=PIPE)
         p.wait()
-        with open(out, 'r') as fp:
-            storage.save(self.node.destination, ContentFile(fp.read()))
-        os.close(handle)
-        os.remove(out)
+        with open(b, 'r') as b_fp:
+            storage.save(self.node.destination, ContentFile(b_fp.read()))
+        os.close(a_handle)
+        os.close(b_handle)
+        os.remove(a)
+        os.remove(b)
 
 
-class StyleCompressor(Shrink):
-    already_treated = '(s)css files:\tup-to-date.'
+class StyleShrink(Shrink):
+    already_treated = 'ss files:\tup-to-date.'
 
     def therapy(self):
         css = []
-        parser = Scss()
-        for absolute_path in self.absolute_paths:
-            with open(absolute_path, 'r') as fp:
-                if absolute_path.endswith('.scss'):
-                    css.append(parser.compile(fp.read()))
-                else:
-                    css.append(fp.read())
-        handle, tmp = tempfile.mkstemp()
-        with open(tmp, 'w') as fp:
-            fp.write('\n'.join(css))
-        args = ['java', '-jar', settings.SHRINK_YUI_COMPRESSOR,
-                '--type', 'css', tmp]
-        args = map(smart_str, args)
-        print ('Compressing (s)css in `%s` to `%s`' %
-            (self.template, self.node.destination))
-        p = Popen(args, stdout=PIPE)
-        p.wait()
-        storage.save(self.node.destination, ContentFile(p.stdout.read()))
-        os.close(handle)
-        os.remove(tmp)
+        for fn in self.absolute_paths:
+            with open(fn, 'r') as fp:
+                css.append(fp.read())
+        css = css_slimmer(''.join(css))
+        storage.save(self.node.destination, ContentFile(css))
 

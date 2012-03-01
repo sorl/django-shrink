@@ -1,9 +1,9 @@
 import posixpath
 import sys
 import urllib
-from django.conf import settings
 from django.contrib.staticfiles import finders
 from django.utils.functional import LazyObject
+from shrink.conf import settings
 
 
 class LazyStorage(LazyObject):

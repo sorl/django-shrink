@@ -1,8 +1,19 @@
 from . import defaults
-from django.conf import settings
+from django.conf import settings as user_settings
+from django.utils.functional import LazyObject
 
 
-for setting in dir(defaults):
-    if setting == setting.upper() and not hasattr(settings, setting):
-        setattr(settings, setting, getattr(defaults, setting))
+class Settings(object):
+    pass
 
+
+class LazySettings(LazyObject):
+    def _setup(self):
+        self._wrapped = Settings()
+        for obj in (defaults, user_settings):
+            for attr in dir(obj):
+                if attr == attr.upper():
+                    setattr(self, attr, getattr(obj, attr))
+
+
+settings = LazySettings()

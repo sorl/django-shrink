@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.staticfiles.management.commands.collectstatic import Command as CollectStaticCommand
 from django.template.loader import get_template
 from shrink.helpers import import_string, handle_extensions
-from shrink.base import StyleCompressor, ScriptCompiler
+from shrink.base import StyleShrink, ScriptShrink
 from shrink.templatetags.shrink import ScriptNode, StyleNode
 from optparse import make_option
 from os.path import isdir, splitext, join as pjoin
@@ -14,10 +14,10 @@ def rshrink(node, t):
     Recursive fun
     """
     if isinstance(node, ScriptNode):
-        shrink = ScriptCompiler(node, t.name)
+        shrink = ScriptShrink(node, t.name)
         shrink.update()
     elif isinstance(node, StyleNode):
-        shrink = StyleCompressor(node, t.name)
+        shrink = StyleShrink(node, t.name)
         shrink.update()
     if hasattr(node, 'nodelist'):
         for n in node.nodelist:
@@ -38,7 +38,7 @@ class Command(CollectStaticCommand):
     )
     help = (
         "Collect static files from apps and other locations in a single"
-        "location.\nShrinks javascripts and css/scss defined in templates."
+        "location.\nShrinks javascripts and css defined in templates."
         )
 
     def handle_noargs(self,  **options):

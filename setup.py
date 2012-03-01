@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-shrink',
-    version='0.0.3.3',
-    description='js compiler & css minifier with sass compatibility',
+    version='0.1',
+    description='js & css minifier',
     long_description=open('README.rst').read(),
     author='Mikko Hellsing',
     author_email='mikko@aino.se',
@@ -14,7 +14,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     zip_safe=False,
-    install_requires = [ 'pyScss==1.0.6' ],
+    install_requires = [ 'slimmer==0.1.30' ],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Environment :: Web Environment',
