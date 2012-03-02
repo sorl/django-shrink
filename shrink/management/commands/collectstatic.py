@@ -25,21 +25,30 @@ def rshrink(node, t):
 
 
 class Command(CollectStaticCommand):
-    option_list = CollectStaticCommand.option_list + (
-        make_option('--extension', '-e', dest='extensions', default=['html'],
-            help=(
-                'The file extension(s) to examine for scripts and css '
-                '(default: ".html", separate multiple extensions with commas, '
-                'or use -e multiple times)'
-                ),
-            action='append'),
-        make_option('--noshrink', action='store_false', dest='shrink',
-            default=True, help="Do NOT shrink scripts or css."),
-    )
     help = (
         "Collect static files from apps and other locations in a single"
         "location.\nShrinks javascripts and css defined in templates."
         )
+
+    @property
+    def option_list(self):
+        opt_list = []
+        for opt in CollectStaticCommand.option_list:
+            if opt.get_opt_string() == '--noinput':
+                opt.default = False
+            opt_list.append(opt)
+        opt_list.extend([
+            make_option('--extension', '-e', dest='extensions', default=['html'],
+                help=(
+                    'The file extension(s) to examine for scripts and css '
+                    '(default: ".html", separate multiple extensions with commas, '
+                    'or use -e multiple times)'
+                    ),
+                action='append'),
+            make_option('--noshrink', action='store_false', dest='shrink',
+                default=True, help="Do NOT shrink scripts or css."),
+        ])
+        return opt_list
 
     def handle_noargs(self,  **options):
         super(Command, self).handle_noargs(**options)
