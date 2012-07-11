@@ -24,7 +24,7 @@ class ShrinkNode(Node):
         for bit in bits[2:]:
             m = kw_pat.match(bit)
             if not m:
-                raise TemplateSyntaxError(self.error_msg)
+                raise TemplateSyntaxError(self.error_message)
             attrs[m.group('key')] = m.group('value')
         self.attrs = flatatt(attrs)
         self.nodelist = parser.parse((self.endtag,))
